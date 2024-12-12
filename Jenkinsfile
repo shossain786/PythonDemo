@@ -15,7 +15,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${env.DOCKER_IMAGE}:latest ."
+                    bat "docker build -t ${env.DOCKER_IMAGE}:latest ."
                 }
             }
         }
@@ -23,7 +23,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 withDockerRegistry([credentialsId: 'dockerhub-credentials', url: 'https://index.docker.io/v1/']) {
-                    sh "docker push ${env.DOCKER_IMAGE}:latest"
+                    bat "docker push ${env.DOCKER_IMAGE}:latest"
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "Deploying application..."
-                sh "docker run -d -p 5000:5000 ${env.DOCKER_IMAGE}:latest"
+                bat "docker run -d -p 5000:5000 ${env.DOCKER_IMAGE}:latest"
             }
         }
     }
